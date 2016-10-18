@@ -1,6 +1,7 @@
 var express = require ('express')
 var app = express ()
-var port = 4000
+var port = process.env.PORT || 4000 // for heroku
+// var port = 4000 // for localhost
 
 var bodyParser = require ('body-parser')
 
@@ -12,7 +13,14 @@ var ajaxRoutes = require ('./routes/users_api')
 
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost/user-shop')
+
+if (process.env.NODE_ENV === 'production'){
+
+  mongoose.connect('mongodb://Huddyhuda:Ironman$492@ds035653.mlab.com:35653/project_app') //for heroku
+} else {
+  mongoose.connect('mongodb://localhost/user-shop')// for localhost
+}
+
 
 app.set('view engine', 'ejs')
 app.use(expressLayouts)
